@@ -12,22 +12,34 @@ using System.Threading.Tasks;
 
 namespace MayEpCHADesktopApp.Core.Services
 {
-    public class ApiServices:IApiServices
+    public class ApiServices : IApiServices
     {
+        public event Action ChangeEvent;
+        private readonly IDatabaseServices _databaseServices;
         private HttpClient httpClient;
-        private  HttpRequestMessage httpRequest;
-        //private string Address = "https://localhost:7202/";
-        private string Address = "http://10.84.70.81:8082/";
+        private HttpRequestMessage httpRequest;
+        // private string Address = "https://localhost:7202/";
+        //private string Address = "http://10.84.50.10:8081/";
+        private string Address = "https://chainjectionmoldingmachine.azurewebsites.net/";
         public ObservableCollection<Employee> ListEmployee = new ObservableCollection<Employee>();
-        public  ObservableCollection<Mold> ListMold = new ObservableCollection<Mold>();
+        public ObservableCollection<Mold> ListMold = new ObservableCollection<Mold>();
         public ObservableCollection<Product> ListProduct = new ObservableCollection<Product>();
         public ObservableCollection<Machine> ListMachine = new ObservableCollection<Machine>();
         public ObservableCollection<ShiftReport> ListShiftReport = new ObservableCollection<ShiftReport>();
         public ShiftReports ShiftReports = new ShiftReports();
-        public ApiServices() {
-
-            //HttpRequest.Headers.Add("Authorization", "Bearer  " + auth);
-            
+        public ApiServices(IDatabaseServices databaseServices)
+        {
+            _databaseServices=databaseServices;
+        }
+        public void StoreEvent (string NameEvent,string MachineId)
+        {
+            MayEpCHADesktopApp.Core.Database.ModelDatabase.EventMachine eventMachine1 = new Database.ModelDatabase.EventMachine( );
+            eventMachine1.NameEvent=NameEvent;
+            eventMachine1.Status=0;
+            eventMachine1.DateTime=DateTime.UtcNow;
+            eventMachine1.Status=0;
+            eventMachine1.MachineId=MachineId;
+            _databaseServices.InsertEventAsync(eventMachine1);
         }
 
         public async Task<ObservableCollection<Machine>> GetMachineTotal(string auth)
@@ -39,34 +51,35 @@ namespace MayEpCHADesktopApp.Core.Services
                     using (httpRequest = new HttpRequestMessage())
                     {
                         httpRequest.Headers.Add("User-Agent", "Mozilla/5.0");
-                        string Url = Address +"api/machines";
+                        string Url = Address + "api/machines";
                         httpRequest.Method = System.Net.Http.HttpMethod.Get;
                         httpRequest.RequestUri = new Uri(Url);
                         HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
                         var ob = await httpResponse.Content.ReadAsStringAsync();
                         ListMachine = JsonConvert.DeserializeObject<ObservableCollection<Machine>>(ob);
                     }
-
                 }
 
             }
             catch
             {
-              //  CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
+                CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
+                StoreEvent("Lỗi lấy dữ liệu tên máy ép","All Machine");
+                ChangeEvent?.Invoke( );
             }
 
             return ListMachine;
         }
-        public  async Task<ObservableCollection<Employee>> GetEmployeeTotal(string auth)
+        public async Task<ObservableCollection<Employee>> GetEmployeeTotal(string auth)
         {
             try
             {
                 using (httpClient = new HttpClient())
                 {
-                    using( httpRequest = new HttpRequestMessage())
+                    using (httpRequest = new HttpRequestMessage())
                     {
                         httpRequest.Headers.Add("User-Agent", "Mozilla/5.0");
-                        string Url = Address+"api/employees";
+                        string Url = Address + "api/employees";
                         httpRequest.Method = System.Net.Http.HttpMethod.Get;
                         httpRequest.RequestUri = new Uri(Url);
                         HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
@@ -79,10 +92,12 @@ namespace MayEpCHADesktopApp.Core.Services
             }
             catch
             {
-              //  CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
+                StoreEvent("Lỗi lấy dữ liệu tên nhân viên","All Machine");
+                ChangeEvent?.Invoke( );
+                //  CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
             }
-      
-            return ListEmployee;   
+
+            return ListEmployee;
         }
 
         public async Task<ObservableCollection<Mold>> GetMoldTotal(string auth)
@@ -93,7 +108,7 @@ namespace MayEpCHADesktopApp.Core.Services
                 {
                     using (httpRequest = new HttpRequestMessage())
                     {
-                        string Url = Address+"api/molds";
+                        string Url = Address + "api/molds";
                         httpRequest.Method = System.Net.Http.HttpMethod.Get;
                         httpRequest.RequestUri = new Uri(Url);
                         HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
@@ -103,10 +118,12 @@ namespace MayEpCHADesktopApp.Core.Services
                     }
 
                 }
-   }
+            }
             catch
             {
-            //    CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
+                StoreEvent("Lỗi lấy dữ liệu tên khuôn","All Machine");
+                ChangeEvent?.Invoke( );
+                //    CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
             }
 
             return ListMold;
@@ -120,7 +137,7 @@ namespace MayEpCHADesktopApp.Core.Services
                 {
                     using (httpRequest = new HttpRequestMessage())
                     {
-                        string Url = Address+"api/products/details";
+                        string Url = Address + "api/products/details";
                         httpRequest.Method = System.Net.Http.HttpMethod.Get;
                         httpRequest.RequestUri = new Uri(Url);
                         HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
@@ -134,7 +151,9 @@ namespace MayEpCHADesktopApp.Core.Services
             }
             catch
             {
-              //  CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
+                StoreEvent("Lỗi lấy dữ liệu tên sản phẩm","All Machine");
+                ChangeEvent?.Invoke( );
+                //  CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
             }
 
             return ListProduct;
@@ -148,13 +167,13 @@ namespace MayEpCHADesktopApp.Core.Services
                 {
                     using (httpRequest = new HttpRequestMessage())
                     {
-                        string Url = Address+"api/shiftreports";
+                        string Url = Address + "api/shiftreports";
                         httpRequest.Method = System.Net.Http.HttpMethod.Get;
                         httpRequest.RequestUri = new Uri(Url);
                         HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
                         var ob = await httpResponse.Content.ReadAsStringAsync();
-                        ShiftReports = JsonConvert.DeserializeObject<ShiftReports>(ob );
-                        foreach(ShiftReport item in ShiftReports.items)
+                        ShiftReports = JsonConvert.DeserializeObject<ShiftReports>(ob);
+                        foreach (ShiftReport item in ShiftReports.items)
                         {
                             ListShiftReport.Add(item);
                         }
@@ -165,7 +184,9 @@ namespace MayEpCHADesktopApp.Core.Services
             }
             catch
             {
-               // CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
+                StoreEvent("Lỗi lấy dữ liệu thông tin nhân viên","All Machine");
+                ChangeEvent?.Invoke( );
+                // CustomMessageBox.Show("Lỗi trong quá trình lấy dữ liệu từ Sever!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
             }
 
             return ListShiftReport;
@@ -182,18 +203,18 @@ namespace MayEpCHADesktopApp.Core.Services
                 {
                     using (httpRequest = new HttpRequestMessage())
                     {
-                        string Url = Address+"api/shiftreports";
+                        string Url = Address + "api/shiftreports";
                         httpRequest.Method = System.Net.Http.HttpMethod.Post;
                         httpRequest.RequestUri = new Uri(Url);
                         httpRequest.Content = content;
                         HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
-                        if(httpResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                        if (httpResponse.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             CustomMessageBox.Show("Gửi dữ liệu thành công", "Thông báo", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Asterisk);
                         }
                         else
                         {
-                       //     CustomMessageBox.Show("Gửi dữ liệu không thành công.", "Lỗi", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Error);
+                            //     CustomMessageBox.Show("Gửi dữ liệu không thành công.", "Lỗi", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Error);
                         }
 
                     }
@@ -203,10 +224,10 @@ namespace MayEpCHADesktopApp.Core.Services
             }
             catch
             {
-             //   CustomMessageBox.Show("Lỗi trong quá trình gửi dữ liệu lên server!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
+                //   CustomMessageBox.Show("Lỗi trong quá trình gửi dữ liệu lên server!", "Cảnh bảo", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning);
             }
 
-            
+
         }
         public async Task PostShiftReportSingle(string auth, ShiftReport shiftReport)
         {
@@ -230,7 +251,7 @@ namespace MayEpCHADesktopApp.Core.Services
                         }
                         else
                         {
-                                CustomMessageBox.Show("Gửi dữ liệu không thành công.", "Lỗi", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Error);
+                            CustomMessageBox.Show("Gửi dữ liệu không thành công.", "Lỗi", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Error);
                         }
 
                     }

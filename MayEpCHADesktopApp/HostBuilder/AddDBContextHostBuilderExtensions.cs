@@ -19,9 +19,10 @@ namespace MayEpCHADesktopApp.HostBuilder
             host.ConfigureServices(services =>
 
             {
-                services.AddDbContext<ApplicationDbContext>();
+                services.AddDbContextFactory<ApplicationDbContext>();
                 services.AddSingleton<IConfigurationRepository, ConfigurationRepository>();
                 services.AddSingleton<IEventMachineRepository, EventMachineRepository>();
+                services.AddSingleton<IHicstoryConfigurationRepository, HicstoryConfigurationRepository>();
 
             });
 

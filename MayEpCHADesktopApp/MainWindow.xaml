@@ -24,6 +24,10 @@
         xmlns:managev="clr-namespace:MayEpCHADesktopApp.Views.ManageView"
         xmlns:reportv="clr-namespace:MayEpCHADesktopApp.Views.ReportView"
         xmlns:reportvm="clr-namespace:MayEpCHADesktopApp.Core.ViewModels.ReportViewModels;assembly=MayEpCHADesktopApp.Core"
+        xmlns:historyvm="clr-namespace:MayEpCHADesktopApp.Core.ViewModels.HistoryViewModel;assembly=MayEpCHADesktopApp.Core"
+        xmlns:helpvm="clr-namespace:MayEpCHADesktopApp.Core.ViewModels.HelpViewModel;assembly=MayEpCHADesktopApp.Core"
+        xmlns:historyv="clr-namespace:MayEpCHADesktopApp.Views.HistoryView"
+        xmlns:helpv="clr-namespace:MayEpCHADesktopApp.Views.HelpView"
         d:DesignHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={con:SizeConverter}, ConverterParameter='1'}"
         d:DesignWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={Converter:SizeConverter}, ConverterParameter='1'}"
         MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={Converter:SizeConverter}, ConverterParameter='0.5'}"
@@ -178,16 +182,24 @@
                 
                 <Grid Grid.Row="7">
                     <components:ButtonMenu ContentText="Lịch Sử" NamePackIcon="History"
-                                           IsRequired="{Binding IsButtonHelp}"
+                                           IsRequired="{Binding IsButtonHistory}"
                         >
-                        
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <prism:InvokeCommandAction Command="{Binding HistoryCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </components:ButtonMenu>
                 </Grid>
                 <Grid Grid.Row="8">
                     <components:ButtonMenu ContentText="Hỗ trợ" NamePackIcon="HelpCircleOutline"
-                                           IsRequired="{Binding IsButtonHistory}"
+                                           IsRequired="{Binding IsButtonHelp}"
                         >
-
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <prism:InvokeCommandAction Command="{Binding HelpCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </components:ButtonMenu>
                 </Grid>
 
@@ -225,8 +237,12 @@
                         <DataTemplate DataType="{x:Type reportvm:ReportViewModel}">
                             <reportv:ReportView/>
                         </DataTemplate>
-
-
+                        <DataTemplate DataType="{x:Type helpvm:HelpViewModel}">
+                            <helpv:HelpView />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type historyvm:HistoryViewModel}">
+                            <historyv:HistoryView />
+                        </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
             </Viewbox>

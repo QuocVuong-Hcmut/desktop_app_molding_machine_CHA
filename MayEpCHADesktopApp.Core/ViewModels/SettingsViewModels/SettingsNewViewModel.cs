@@ -16,12 +16,12 @@ using System.Windows.Threading;
 
 namespace MayEpCHADesktopApp.Core.ViewModels.SettingsViewModels
 {
-    public class SettingsNewViewModel : ViewModels.BaseViewModels.BaseViewModel
+    public class SettingsNewViewModel: ViewModels.BaseViewModels.BaseViewModel
     {
         #region var
-        public bool IsShift1 { get => isShift1; set { isShift1 = value; OnPropertyChanged(); } }
+        public bool IsShift1 { get => isShift1; set { isShift1=value; OnPropertyChanged( ); } }
         private bool isShift1;
-        public bool IsShift2 { get => isShift2; set { isShift2 = value; OnPropertyChanged(); } }
+        public bool IsShift2 { get => isShift2; set { isShift2=value; OnPropertyChanged( ); } }
         private bool isShift2;
         private string productId;
         private string machineId;
@@ -29,173 +29,178 @@ namespace MayEpCHADesktopApp.Core.ViewModels.SettingsViewModels
         private int quantity;
         private int shift;
         private double cycleInjection;
-        public Product Product { get => product; set { product = value; 
-                ProductId = Product.Id ;
+        public Product Product
+        {
+            get => product; set
+            {
+                product=value;
+                ProductId=Product.Id;
 
-                        Mold = Product.Mold;
-                MoldId =  Mold.Id ; 
-                CycleInjection = Mold.StandardInjectionCycle;
+                Mold=Product.Mold;
+                MoldId=Mold.Id;
+                CycleInjection=Mold.StandardInjectionCycle;
 
-                
-                
-                OnPropertyChanged(); } }
+
+
+                OnPropertyChanged( );
+            }
+        }
         private Product product;
         private Mold mold;
-        public Mold Mold { get => mold; set { mold = value;  OnPropertyChanged(); } }
+        public Mold Mold { get => mold; set { mold=value; OnPropertyChanged( ); } }
         private Machine machine;
-        public Machine Machine { get => machine; set { machine = value;if (Machine != null) { MachineId = Machine.Id; }; OnPropertyChanged(); } }
-        public string ProductId { get => productId; set { productId = value; OnPropertyChanged(); } }
-        public string MachineId { get => machineId; set { machineId = value; OnPropertyChanged(); } }
-        public string MoldId { get => moldId; set { moldId = value; OnPropertyChanged(); } }
-        public int Quantity { get => quantity; set { quantity = value; OnPropertyChanged(); } }
-        public int Shift { get => shift; set { shift = value; OnPropertyChanged(); } }
-        public Configuration ConfigurationSelect { get => configurationSelect; set { configurationSelect = value; OnPropertyChanged(); } }
+        public Machine Machine { get => machine; set { machine=value; if ( Machine!=null ) { MachineId=Machine.Id; }; OnPropertyChanged( ); } }
+        public string ProductId { get => productId; set { productId=value; OnPropertyChanged( ); } }
+        public string MachineId { get => machineId; set { machineId=value; OnPropertyChanged( ); } }
+        public string MoldId { get => moldId; set { moldId=value; OnPropertyChanged( ); } }
+        public int Quantity { get => quantity; set { quantity=value; OnPropertyChanged( ); } }
+        public int Shift { get => shift; set { shift=value; OnPropertyChanged( ); } }
+        public Configuration ConfigurationSelect { get => configurationSelect; set { configurationSelect=value; OnPropertyChanged( ); } }
         private Configuration configurationSelect;
-        public double CycleInjection { get => cycleInjection; set { cycleInjection = value; try { Quantity = Convert.ToInt32(43200 / CycleInjection); } catch (Exception ex) { } OnPropertyChanged(); } }
+        public double CycleInjection { get => cycleInjection; set { cycleInjection=value; try { Quantity=Convert.ToInt32(43200/CycleInjection); } catch ( Exception ex ) { } OnPropertyChanged( ); } }
         private ObservableCollection<Product> listProduct;
         public ObservableCollection<Product> ListProduct
         {
             get => listProduct; set
             {
-                listProduct = value; OnPropertyChanged();
+                listProduct=value; OnPropertyChanged( );
             }
         }
         private ObservableCollection<Mold> listMold;
-        public ObservableCollection<Mold> ListMold { get => listMold; set { listMold = value; } }
+        public ObservableCollection<Mold> ListMold { get => listMold; set { listMold=value; } }
         private ObservableCollection<Employee> listEmployee;
-        public ObservableCollection<Employee> ListEmployee { get => listEmployee; set { listEmployee = value; OnPropertyChanged(); } }
+        public ObservableCollection<Employee> ListEmployee { get => listEmployee; set { listEmployee=value; OnPropertyChanged( ); } }
         private ObservableCollection<Machine> listMachine;
-        public ObservableCollection<Machine> ListMachine { get => listMachine; set { listMachine = value; OnPropertyChanged(); } }
-        //private ObservableCollection<Configuration> listConfigurationShift1;
-        //public ObservableCollection<Configuration> ListConfigurationShift1 { get => listConfigurationShift1; set { listConfigurationShift1 = value; OnPropertyChanged(); } }
+        public ObservableCollection<Machine> ListMachine { get => listMachine; set { listMachine=value; OnPropertyChanged( ); } }
         private ObservableCollection<Configuration> listConfigurationShift2;
-        public ObservableCollection<Configuration> ListConfigurationShift2 { get => listConfigurationShift2; set { listConfigurationShift2 = value; OnPropertyChanged(); } }
+        public ObservableCollection<Configuration> ListConfigurationShift2 { get => listConfigurationShift2; set { listConfigurationShift2=value; OnPropertyChanged( ); } }
         public static Action ActionChangeDatabase { get; set; }
         #endregion var
         public static event Action ActionLoad;
+        public static event Action ChangeEvent;
         public ICommand Shift1 { set; get; }
         public ICommand Shift2 { set; get; }
         public ICommand AddCommandShift2 { set; get; }
         public ICommand TextChangedCommand { set; get; }
         public ICommand DeleteCommandShift2 { set; get; }
         public ICommand ClearCommandShift2 { set; get; }
-        
+
         private IDatabaseServices _databaseServices;
         private IApiServices _apiServices;
         private IBusControl _busControl;
-        DispatcherTimer TSendConfigShift1 = new DispatcherTimer();
-        DispatcherTimer TSendConfigShift2 = new DispatcherTimer();
-        DispatcherTimer TSend = new DispatcherTimer();
-        public SettingsNewViewModel(IDatabaseServices databaseServices, IApiServices apiServices, IBusControl busControl)
+        DispatcherTimer TSendConfigShift1 = new DispatcherTimer( );
+        DispatcherTimer TSendConfigShift2 = new DispatcherTimer( );
+        DispatcherTimer TSend = new DispatcherTimer( );
+        public SettingsNewViewModel (IDatabaseServices databaseServices,IApiServices apiServices,IBusControl busControl)
         {
-            _databaseServices = databaseServices;
-            _apiServices = apiServices;
-            _busControl = busControl;
-            _databaseServices.ClearConfig();
-            ListConfigurationShift2 = new ObservableCollection<Configuration>();
-            AddCommandShift2 = new RelayCommand(async () => await Add());
-            DeleteCommandShift2 = new RelayCommand(async () => await Delete());
-            ClearCommandShift2 = new RelayCommand(async () => await Clear());
-            TSendConfigShift2.Tick += ActionTimer;
-            TSendConfigShift1.Tick += ActionTimer;
+            _databaseServices=databaseServices;
+            _apiServices=apiServices;
+            _busControl=busControl;
+            _databaseServices.ClearConfig( );
+            ListConfigurationShift2=new ObservableCollection<Configuration>( );
+            AddCommandShift2=new RelayCommand(async ( ) => await Add( ));
+            DeleteCommandShift2=new RelayCommand(async ( ) => await Delete( ));
+            ClearCommandShift2=new RelayCommand(async ( ) => await Clear( ));
+            TSendConfigShift2.Tick+=ActionTimer;
+            TSendConfigShift1.Tick+=ActionTimer;
 
-            TSend.Tick += ActionTimer;
-            GetTotalMachine();
-            GetTotalMold();
-            GetTotalProduct();
-            GetTotalEmployee();
-            Load();
+            TSend.Tick+=ActionTimer;
+            GetTotalMachine( );
+            GetTotalMold( );
+            GetTotalProduct( );
+            GetTotalEmployee( );
+            Load( );
             // SendTest();
             //  Send();
             //xóa sạch database
             //_databaseServices.ClearConfig();
             //xóa database 2 ngày trước
-            DeleteConfig();
+            DeleteConfig( );
             //chạy thực tế
             // StartTimer();
             //chạy mô phỏng
             // StartTimerTest();
-           // SendConfigToESP3219h00();
+            // SendConfigToESP3219h00();
 
         }
         //chạy timer mô phỏng
-        public void StartTimerTest()
+        public void StartTimerTest ( )
         {
             int time;
             //set thời gian gửi xuống esp
             int SetPointHourTime = 24;
             int SetPointMinuteTime = 0;
-            if ((SetPointMinuteTime - DateTime.Now.Minute ) < 0)
+            if ( (SetPointMinuteTime-DateTime.Now.Minute)<0 )
             {
-                time = (SetPointHourTime - DateTime.Now.Hour - 1) * 3600 + (SetPointMinuteTime - DateTime.Now.Minute + 60) * 60 ;
-                TSendConfigShift1.Interval = TimeSpan.FromSeconds(10);
-                TSendConfigShift1.Start();
+                time=(SetPointHourTime-DateTime.Now.Hour-1)*3600+(SetPointMinuteTime-DateTime.Now.Minute+60)*60;
+                TSendConfigShift1.Interval=TimeSpan.FromSeconds(10);
+                TSendConfigShift1.Start( );
             }
             else
             {
-                time = (SetPointHourTime - DateTime.Now.Hour ) * 3600 + (SetPointMinuteTime - DateTime.Now.Minute) * 60;
-                TSendConfigShift1.Interval = TimeSpan.FromSeconds(10);
-                TSendConfigShift1.Start();
+                time=(SetPointHourTime-DateTime.Now.Hour)*3600+(SetPointMinuteTime-DateTime.Now.Minute)*60;
+                TSendConfigShift1.Interval=TimeSpan.FromSeconds(10);
+                TSendConfigShift1.Start( );
 
             }
 
         }
         //chạy timer 
-        public void StartTimer()
+        public void StartTimer ( )
         {
 
-            if(DateTime.Now.Hour > 7 && DateTime.Now.Hour < 19)
+            if ( DateTime.Now.Hour>7&&DateTime.Now.Hour<19 )
             {
                 int time;
-                if (DateTime.Now.Minute != 0)
+                if ( DateTime.Now.Minute!=0 )
                 {
-                    time = (19 - DateTime.Now.Hour -1)*3600 + (60-DateTime.Now.Minute)*60 +60-DateTime.Now.Second;
-                    TSendConfigShift2.Interval = TimeSpan.FromSeconds(time);
-                    TSendConfigShift2.Start();
+                    time=(19-DateTime.Now.Hour-1)*3600+(60-DateTime.Now.Minute)*60+60-DateTime.Now.Second;
+                    TSendConfigShift2.Interval=TimeSpan.FromSeconds(time);
+                    TSendConfigShift2.Start( );
                 }
                 else
                 {
-                    time = (19 - DateTime.Now.Hour) * 3600;
-                    TSendConfigShift2.Interval = TimeSpan.FromSeconds(time);
-        
-                    TSendConfigShift2.Start();
+                    time=(19-DateTime.Now.Hour)*3600;
+                    TSendConfigShift2.Interval=TimeSpan.FromSeconds(time);
+
+                    TSendConfigShift2.Start( );
                 }
             }
             else
             {
                 int time;
-                if (DateTime.Now.Minute != 0)
+                if ( DateTime.Now.Minute!=0 )
                 {
-                    time = (7 - DateTime.Now.Hour - 1) * 3600 +(60- DateTime.Now.Minute) * 60 +60- DateTime.Now.Second;
-                    TSendConfigShift1.Interval = TimeSpan.FromSeconds(time);
-                    TSendConfigShift1.Start();
+                    time=(7-DateTime.Now.Hour-1)*3600+(60-DateTime.Now.Minute)*60+60-DateTime.Now.Second;
+                    TSendConfigShift1.Interval=TimeSpan.FromSeconds(time);
+                    TSendConfigShift1.Start( );
 
                 }
                 else
                 {
-                    time = (7 - DateTime.Now.Hour) * 3600;
-                    TSendConfigShift1.Interval = TimeSpan.FromSeconds(time);
-                    
-                    TSendConfigShift1.Start(); 
+                    time=(7-DateTime.Now.Hour)*3600;
+                    TSendConfigShift1.Interval=TimeSpan.FromSeconds(time);
+
+                    TSendConfigShift1.Start( );
 
                 }
             }
 
         }
         //xóa database 2 ngày trước đó
-        public void DeleteConfig()
+        public void DeleteConfig ( )
         {
-            foreach( var configuration in _databaseServices.LoadConfiguration())
+            foreach ( var configuration in _databaseServices.LoadConfiguration( ) )
             {
-                if ((Convert.ToInt32(configuration.DateTime.Day) < (Convert.ToInt32(DateTime.Now.Day.ToString()) - 2)))
+                if ( (Convert.ToInt32(configuration.DateTime.Day)<(Convert.ToInt32(DateTime.Now.Day.ToString( ))-2)) )
                 {
                     _databaseServices.DeleteConfigAsync(configuration);
 
                 }
             }
-            foreach( var item in _databaseServices.LoadEventMachine())
+            foreach ( var item in _databaseServices.LoadEventMachine( ) )
             {
-                if ((Convert.ToInt32(item.DateTime.Day) < (Convert.ToInt32(DateTime.Now.Day.ToString()) - 2)))
+                if ( (Convert.ToInt32(item.DateTime.Day)<(Convert.ToInt32(DateTime.Now.Day.ToString( ))-2)) )
                 {
                     _databaseServices.DeleteEventAsync(item);
 
@@ -203,7 +208,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels.SettingsViewModels
             }
         }
         //khi khởi động app hiện cái gì
-        public void Load()
+        public void Load ( )
         {
             //if (ListConfigurationShift2 != null)
             //{
@@ -235,314 +240,260 @@ namespace MayEpCHADesktopApp.Core.ViewModels.SettingsViewModels
             //}
 
             //test neen cho hieenr thi heets
-            ListConfigurationShift2.Clear();
-            foreach (var configuration in _databaseServices.LoadConfiguration())
+            foreach ( var configuration in _databaseServices.LoadConfiguration( ) )
             {
-
                 ListConfigurationShift2.Add(configuration);
 
             }
-
-
+        }
+        public void StoreEvent (string NameEvent, string MachineId )
+        {
+            MayEpCHADesktopApp.Core.Database.ModelDatabase.EventMachine eventMachine1 = new Database.ModelDatabase.EventMachine( );
+            eventMachine1.NameEvent=NameEvent;
+            eventMachine1.Status=0;
+            eventMachine1.DateTime=DateTime.UtcNow;
+            eventMachine1.Status=0;
+            eventMachine1.MachineId=MachineId;
+            _databaseServices.InsertEventAsync(eventMachine1);
         }
         //khi tới 19h
-        public async void SendConfigToESP3219h00()
+        public async void SendConfigToESP3219h00 ( )
         {
-
-            foreach (var configuration in _databaseServices.LoadConfiguration())
-            {
-                //if(configuration.DateTime.Day == DateTime.Now.Day && configuration.DateTime.Hour > 17 && configuration.DateTime.Hour < 19)
-                if (configuration.DateTime.Day == DateTime.Now.Day && configuration.DateTime.Hour > 0 && configuration.DateTime.Hour < 19)
+            try {
+                foreach ( var configuration in _databaseServices.LoadConfiguration( ) )
                 {
-                    //var endpoint = await _busControl.GetSendEndpoint(new Uri("http://127.0.0.1:8181/send-config"));
-                    //await endpoint.Send<ConfigurationMessage>(new ConfigurationMessage
-                    //{
-                    //    MachineId = configuration.MachineId,
-                    //    Timestamp = DateTime.UtcNow,
-                    //    MoldId = configuration.MoldId,
-                    //    CycleTime = configuration.CycleInjection,
-                    //    ProductId = configuration.ProductId
-
-                    //});
-                    ShiftReport shiftReport = new ShiftReport();
-                    shiftReport.Date = configuration.DateTime.Date;
-                    shiftReport.ShiftNumber = (shift == 1) ? EShift.Night : EShift.Day;
-                    //shiftReport.EmployeeId = ListEmployee[2].Id;
-                    //shiftReport.Employee = ListEmployee[2];
-                  //  shiftReport.Employee = Employee;
-                    shiftReport.ProductId = configuration.ProductId;
-                    foreach(var item in ListProduct)
+                    //if(configuration.DateTime.Day == DateTime.Now.Day && configuration.DateTime.Hour > 17 && configuration.DateTime.Hour < 19)
+                    if ( configuration.DateTime.Day==DateTime.Now.Day&&configuration.DateTime.Hour>0&&configuration.DateTime.Hour<19 )
                     {
-                        if(item.Id == configuration.ProductId)
-                        {
-                            shiftReport.Product = item;
-                            foreach (var item2 in ListMold)
-                            {
-                                if(item.MoldId == item2.Id)
-                                {
-                                    shiftReport.Product.Mold = item2;
-                                }
-                            }
-                        }
+                        SendConfig(configuration);
+                        PostConfig(configuration);
+                        StoreEvent("Gửi lệnh cài đặt từng máy",configuration.MachineId);
                     }
-                    
-                    
-                    shiftReport.TotalQuantity = configuration.Quantity;
-                    shiftReport.StartTime = DateTime.Now;
-                    shiftReport.StopTime = DateTime.Now;
-                    shiftReport.WorkTime = 0;
-                    shiftReport.PauseTime = 0;
-                    shiftReport.Note = "oo";
-                  //  shiftReport.Shots = ListShot;
-                    shiftReport.Machine = Machine;
-                    shiftReport.MachineId = configuration.MachineId;
-                    foreach (var item in ListMachine)
-                    {
-                        if (item.Id == configuration.MachineId)
-                        {
-                            shiftReport.Machine = item;
-                        }
-                    }
-                    shiftReport.EmployeeId = ListEmployee[2].Id;
-                    shiftReport.Employee = ListEmployee[2];
-                    _apiServices.PostShiftReportSingle("", shiftReport);
-                    // post
-                    //ShiftReport shiftReport = new ShiftReport();
-                    //shiftReport.MachineId = configuration.MachineId;
-                    //shiftReport.Date = configuration.DateTime.Date;
-                    //shiftReport.TotalQuantity = configuration.Quantity;
-                    //shiftReport.ProductId = configuration.ProductId;
-                    //shiftReport.ShiftNumber = EShift.Night;
-                    //_apiServices.PostShiftReportSingle("",shiftReport);
-
                 }
+                StoreEvent("Hoàn thành gửi toàn bộ cài đặt","All Machine");
+                ChangeEvent?.Invoke( );
+            } catch
+            {
+                StoreEvent("Gửi toàn bộ cài đặt thất bại","All Machine");
+                ChangeEvent?.Invoke( );
             }
-           // _databaseServices.InsertEventAsync(new EventMachine() { DateTime = DateTime.Now, NameEvent = "Ca2" });
         }
-        public async void SendConfigToESP327h00()
+        public async void SendConfigToESP327h00 ( )
         {
-            foreach (var configuration in _databaseServices.LoadConfiguration())
+            try
             {
-                //if ((Convert.ToInt32( configuration.DateTime.Date) == (Convert.ToInt32(DateTime.Now.Date.ToString()) -1) && configuration.DateTime.Hour > 17 && configuration.DateTime.Hour < 19) || configuration.DateTime.Date == DateTime.Now.Date)
-                //{
-                    //var endpoint = await _busControl.GetSendEndpoint(new Uri("http://127.0.0.1:8181/send-config"));
-                    //await endpoint.Send<ConfigurationMessage>(new ConfigurationMessage
-                    //{
-                    //    MachineId = configuration.MachineId,
-                    //    Timestamp = DateTime.UtcNow,
-                    //    MoldId = configuration.MoldId,
-                    //    CycleTime = configuration.CycleInjection,
-                    //    ProductId = configuration.ProductId
 
-                    //});
-                ShiftReport shiftReport = new ShiftReport();
-                shiftReport.Date = configuration.DateTime.Date;
-                shiftReport.ShiftNumber = (shift == 1) ? EShift.Night : EShift.Day;
-                shiftReport.EmployeeId = "";
-                //  shiftReport.Employee = Employee;
-                shiftReport.ProductId = configuration.ProductId;
-                foreach (var item in ListProduct)
-                {
-                    if (item.Id == configuration.ProductId)
+                    foreach ( var configuration in _databaseServices.LoadConfiguration( ) )
                     {
-                        shiftReport.Product = item;
-                        foreach (var item2 in ListMold)
+                        if ( (Convert.ToInt32(configuration.DateTime.Date)
+                            ==(Convert.ToInt32(DateTime.Now.Date.ToString( ))-1)
+                            &&configuration.DateTime.Hour>17&&configuration.DateTime.Hour<19)
+                            ||configuration.DateTime.Date==DateTime.Now.Date||true )
                         {
-                            if (item.MoldId == item2.Id)
-                            {
-                                shiftReport.Product.Mold = item2;
-                            }
+                            var ListConfig =
+                            from config in _databaseServices.LoadConfiguration( )
+                            where config.MachineId==configuration.MachineId
+                            &&(Convert.ToInt32(config.DateTime.Date)==(Convert.ToInt32(DateTime.Now.Date.ToString( ))-1))
+                            &&config.DateTime.Hour>17&&config.DateTime.Hour<19
+                            ||(config.DateTime.Date==DateTime.Now.Date||true)
+                            select config;
+                            var Configuration = ListConfig.OrderByDescending(i => i.DateTime).First( );
+
+                            PostConfig(Configuration);
+                            SendConfig(Configuration);
+                            StoreEvent("Gửi lệnh cài đặt từng máy",configuration.MachineId);
+
+                    };
+
+                }
+
+                StoreEvent("Hoàn thành gửi toàn bộ cài đặt","All Machine");
+                ChangeEvent?.Invoke( );
+
+            }
+            catch
+            {
+                StoreEvent("Gửi toàn bộ cài đặt thất bại","All Machine");
+                ChangeEvent?.Invoke( );
+            }
+
+        }
+        public async void SendConfig (Configuration configuration)
+        {
+            var endpoint = await _busControl.GetSendEndpoint(new Uri("http://127.0.0.1:8181/send-config"));
+            await endpoint.Send<ConfigurationMessage>(new ConfigurationMessage
+            {
+                MachineId=configuration.MachineId,
+                Timestamp=DateTime.UtcNow,
+                MoldId=configuration.MoldId,
+                CycleTime=configuration.CycleInjection,
+                ProductId=configuration.ProductId
+            });
+        }
+        public void PostConfig (Configuration configuration)
+        {
+            ShiftReport shiftReport = new ShiftReport( );
+            shiftReport.Date=configuration.DateTime.Date;
+            shiftReport.ShiftNumber=(shift==1) ? EShift.Night : EShift.Day;
+            shiftReport.EmployeeId="";
+            //  shiftReport.Employee = Employee;
+            shiftReport.ProductId=configuration.ProductId;
+            foreach ( var item in ListProduct )
+            {
+                if ( item.Id==configuration.ProductId )
+                {
+                    shiftReport.Product=item;
+                    foreach ( var item2 in ListMold )
+                    {
+                        if ( item.MoldId==item2.Id )
+                        {
+                            shiftReport.Product.Mold=item2;
                         }
                     }
                 }
-
-
-                shiftReport.TotalQuantity = configuration.Quantity;
-                shiftReport.StartTime = DateTime.Now;
-                shiftReport.StopTime = DateTime.Now;
-                shiftReport.WorkTime = 0;
-                shiftReport.PauseTime = 0;
-                shiftReport.Note = "";
-                //  shiftReport.Shots = ListShot;
-                shiftReport.Machine = Machine;
-                shiftReport.MachineId = configuration.MachineId;
-                foreach (var item in ListMachine)
-                {
-                    if (item.Id == configuration.MachineId)
-                    {
-                        shiftReport.Machine = item;
-                    }
-                }
-                _apiServices.PostShiftReportSingle("", shiftReport);
-
-                //ShiftReport shiftReport = new ShiftReport();
-                //shiftReport.MachineId = configuration.MachineId;
-                //shiftReport.Date = configuration.DateTime;
-                //shiftReport.TotalQuantity = configuration.Quantity;
-                //shiftReport.ProductId = configuration.ProductId;
-                //shiftReport.ShiftNumber = EShift.Day;
-                //_apiServices.PostShiftReportSingle("", shiftReport);
-
-                //       }
             }
-            _databaseServices.InsertEventAsync(new EventMachine() { DateTime = DateTime.Now, NameEvent = "Ca2" });
+
+
+            shiftReport.TotalQuantity=configuration.Quantity;
+            shiftReport.StartTime=DateTime.Now;
+            shiftReport.StopTime=DateTime.Now;
+            shiftReport.WorkTime=0;
+            shiftReport.PauseTime=0;
+            shiftReport.Note="";
+            //  shiftReport.Shots = ListShot;
+            shiftReport.Machine=Machine;
+            shiftReport.MachineId=configuration.MachineId;
+            foreach ( var item in ListMachine )
+            {
+                if ( item.Id==configuration.MachineId )
+                {
+                    shiftReport.Machine=item;
+                }
+            }
+            _apiServices.PostShiftReportSingle("",shiftReport);
+
         }
         //Xú lí khi 19h không mở áp
-        public void ActionTimer(object? sender, EventArgs e)
+        public void ActionTimer (object? sender,EventArgs e)
         {
-            CustomMessageBox.Show("juhjygvjhgc");
-           // Send();
-            SendTest();
+            // Send();
+            SendTest( );
         }
-        public async void SendTest()
+        public async void SendTest ( )
         {
-            //foreach (var configuration in _databaseServices.LoadConfiguration())
-            //{
-            //    if (configuration.DateTime.Day == DateTime.Now.Day )
-            //    {
-            //        var endpoint = await _busControl.GetSendEndpoint(new Uri("http://127.0.0.1:8181/send-config"));
-            //        await endpoint.Send<ConfigurationMessage>(new ConfigurationMessage
-            //        {
-            //            MachineId = configuration.MachineId,
-            //            Timestamp = DateTime.UtcNow,
-            //            MoldId = configuration.MoldId,
-            //            CycleTime = configuration.CycleInjection,
-            //            ProductId = configuration.ProductId
-
-            //        });
-            //        // post
-            //        //ShiftReport shiftReport = new ShiftReport();
-            //        //shiftReport.MachineId = configuration.MachineId;
-            //        //shiftReport.Date = configuration.DateTime.Date;
-            //        //shiftReport.TotalQuantity = configuration.Quantity;
-            //        //shiftReport.ProductId = configuration.ProductId;
-            //        //shiftReport.ShiftNumber = EShift.Night;
-            //        //_apiServices.PostShiftReportSingle("", shiftReport);
-
-
-
-            //    }
-
-            //}
-            SendConfigToESP3219h00();
+            SendConfigToESP3219h00( );
         }
-        public void Send()
+        public void Send ( )
         {
-            if(DateTime.Now.Hour > 19 && DateTime.Now.Hour < 20)
+            if ( DateTime.Now.Hour>19&&DateTime.Now.Hour<20 )
             {
                 bool check = false;
-                foreach(var item in _databaseServices.LoadEventMachine())
+                foreach ( var item in _databaseServices.LoadEventMachine( ) )
                 {
-                    if(item.DateTime.Date == DateTime.Now && item.NameEvent == "ca2")
+                    if ( item.DateTime.Date==DateTime.Now&&item.NameEvent=="ca2" )
                     {
-                        check = true;
+                        check=true;
                     }
                 }
-                if (!check)
+                if ( !check )
                 {
-                    SendConfigToESP3219h00();
+                    SendConfigToESP3219h00( );
                 }
             }
-            if (DateTime.Now.Hour > 7 && DateTime.Now.Hour < 8)
+            if ( DateTime.Now.Hour>7&&DateTime.Now.Hour<8 )
             {
                 bool check = false;
-                foreach (var item in _databaseServices.LoadEventMachine())
+                foreach ( var item in _databaseServices.LoadEventMachine( ) )
                 {
-                    if (item.DateTime.Day == DateTime.Now.Day && item.NameEvent == "ca1")
+                    if ( item.DateTime.Day==DateTime.Now.Day&&item.NameEvent=="ca1" )
                     {
-                        check = true;
+                        check=true;
                     }
                 }
-                if (!check)
+                if ( !check )
                 {
-                    SendConfigToESP327h00();
+                    SendConfigToESP327h00( );
                 }
             }
         }
-        private Task Clear()
+        private Task Clear ( )
         {
-            ListConfigurationShift2.Clear();
+            ListConfigurationShift2.Clear( );
             return Task.CompletedTask;
         }
-        private Task Delete()
+        private Task Delete ( )
         {
             //DateTime.Now.Hour > 10 && DateTime.Now.Hour < 20
-            if (true)
+            if ( true )
             {
                 try
                 {
                     _databaseServices.DeleteConfigAsync(ConfigurationSelect);
                     ListConfigurationShift2.Remove(ConfigurationSelect);
-                    ActionChangeDatabase?.Invoke();
-
+                    ActionChangeDatabase?.Invoke( );
                 }
-                catch (Exception ex) { }
-
+                catch ( Exception ex ) { }
             }
-
-            
             return Task.CompletedTask;
         }
-        private Task Add()
+        private Task Add ( )
         {
-            try {
-                AddDataGrid();
-                ActionChangeDatabase?.Invoke();
-            } catch { }
-
-            return Task.CompletedTask;
-        }
-        public void AddDataGrid()
-        {
-            if (DateTime.Now.Hour > 7 && DateTime.Now.Hour < 20|| true)
+            try
             {
-
+                AddDataGrid( );
+                ActionChangeDatabase?.Invoke( );
+            }
+            catch { }
+            return Task.CompletedTask;
+        }
+        public void AddDataGrid ( )
+        {
+            if ( DateTime.Now.Hour>7&&DateTime.Now.Hour<20||true )
+            {
                 try
                 {
-                    Configuration configuration = new Configuration();
-                    configuration.Quantity = Quantity;
-                    configuration.Shift = 2;
-                    configuration.MoldId = Mold.Id;
-                    configuration.MachineId = Machine.Id;
-                    configuration.ProductId = Product.Id;
-                    configuration.CycleInjection = CycleInjection;
-                    configuration.DateTime = DateTime.UtcNow;
+                    Configuration configuration = new Configuration( );
+                    configuration.Quantity=Quantity;
+                    configuration.Shift=2;
+                    configuration.MoldId=Mold.Id;
+                    configuration.MachineId=Machine.Id;
+                    configuration.ProductId=Product.Id;
+                    configuration.CycleInjection=CycleInjection;
+                    configuration.DateTime=DateTime.UtcNow;
                     ListConfigurationShift2.Add(configuration);
                     AddDatabase(configuration);
                 }
                 catch
                 {
-                    CustomMessageBox.Show("Vui lòng nhập đầy đủ thông tin", " Cảnh báo", System.Windows.MessageBoxButton.OKCancel);
+                    CustomMessageBox.Show("Vui lòng nhập đầy đủ thông tin"," Cảnh báo",System.Windows.MessageBoxButton.OKCancel);
                 }
             }
-
-
         }
-        public void AddDatabase(Configuration configuration)
+        public void AddDatabase (Configuration configuration)
         {
             _databaseServices.InsertConfigAsync(configuration);
-            ActionChangeDatabase?.Invoke();
+            ActionChangeDatabase?.Invoke( );
         }
-        public async void GetTotalMold()
+        public async void GetTotalMold ( )
         {
-            ListMold = new ObservableCollection<Mold>();
-            ListMold = await _apiServices.GetMoldTotal("");
+            ListMold=new ObservableCollection<Mold>( );
+            ListMold=await _apiServices.GetMoldTotal("");
 
         }
-        public async void GetTotalProduct()
+        public async void GetTotalProduct ( )
         {
-            ListProduct = new ObservableCollection<Product>();
-            ListProduct = await _apiServices.GetProductTotal("");
+            ListProduct=new ObservableCollection<Product>( );
+            ListProduct=await _apiServices.GetProductTotal("");
         }
-        public async void GetTotalMachine()
+        public async void GetTotalMachine ( )
         {
-            ListMachine = new ObservableCollection<Machine>();
-            ListMachine = await _apiServices.GetMachineTotal("");
+            ListMachine=new ObservableCollection<Machine>( );
+            ListMachine=await _apiServices.GetMachineTotal("");
         }
-        public async void GetTotalEmployee()
+        public async void GetTotalEmployee ( )
         {
-            ListEmployee = new ObservableCollection<Employee>();
-            ListEmployee = await _apiServices.GetEmployeeTotal("");
+            ListEmployee=new ObservableCollection<Employee>( );
+            ListEmployee=await _apiServices.GetEmployeeTotal("");
         }
     }
 }

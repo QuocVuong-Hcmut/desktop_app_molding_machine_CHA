@@ -54,6 +54,12 @@ namespace MayEpCHADesktopApp.Core.Services
                 case MayEpCHADesktopApp.Core.ViewModels.AlertViewModel.AlertViewModel:
                     _navigationStore.SelectButton = 6;
                     break;
+                case MayEpCHADesktopApp.Core.ViewModels.HistoryViewModel.HistoryViewModel:
+                    _navigationStore.SelectButton=7;
+                    break;
+                case MayEpCHADesktopApp.Core.ViewModels.HelpViewModel.HelpViewModel:
+                    _navigationStore.SelectButton=8;
+                    break;
                 case MayEpCHADesktopApp.Core.ViewModels.ObservationViewModel.ObservationMachineViewModel:
                     _navigationStore.SelectButton = 9;
                     break;

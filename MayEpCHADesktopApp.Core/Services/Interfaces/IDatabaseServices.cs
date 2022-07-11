@@ -13,10 +13,15 @@ namespace MayEpCHADesktopApp.Core.Services.Interfaces
         void InsertConfigAsync(Configuration configution);
         void DeleteConfigAsync(Configuration configution);
         void ClearConfig();
-        void InsertEventAsync(EventMachine configution);
-        void DeleteEventAsync(EventMachine configution);
+        void InsertEventAsync(EventMachine eventMachine);
+        void DeleteEventAsync(EventMachine eventMachine);
         public ObservableCollection<Configuration> LoadConfiguration();
         public ObservableCollection<EventMachine> LoadEventMachine();
         void ClearEvent();
+        void InsertHicstoryAsync(HistoryCofiguration historyCofiguration);
+        void DeleteHicstoryAsync(HistoryCofiguration historyCofiguration);
+        void ClearHicstory();
+        public ObservableCollection<HistoryCofiguration> LoadHicstoryMachine();
+        void UpdateEventAsync (EventMachine eventMachine);
     }
 }

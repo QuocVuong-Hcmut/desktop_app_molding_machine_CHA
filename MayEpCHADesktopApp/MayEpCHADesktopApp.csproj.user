@@ -22,6 +22,12 @@
     <Compile Update="Views\AlertView\AlertView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\HelpView\HelpView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\HistoryView\HistoryView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\LoginView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -127,6 +133,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AlertView\AlertView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\HelpView\HelpView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\HistoryView\HistoryView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\LoginView.xaml">

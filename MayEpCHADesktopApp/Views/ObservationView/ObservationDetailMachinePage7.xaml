@@ -35,6 +35,7 @@
                 <materialDesign:Card Margin="10 10 10 5"
                                          materialDesign:ShadowAssist.ShadowDepth="Depth3">
                     <components:MachineInformationDetail
+                        x:Name="L9"
                                 MachineName="L9"
                             CycleStandard="{Binding CycleStandard}"
                             RealCycle="{Binding Cycle}"

@@ -38,7 +38,16 @@
                     Width="628"
                     Content="Sơ đồ máy ép"
                     Command="{Binding ObservationMachineCommand}"
-                    FontSize="25"></Button>
+                    FontSize="25">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.5"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+                </Button>
                
                 <Button Style="{StaticResource ButtonNormal}"
                     Width="628"
@@ -47,7 +56,16 @@
                     Visibility="{Binding IsMachine, Converter={StaticResource BooleanToVisibilityConverter}}"
 
                     Command="{Binding ObservationMachineCommand}"
-                    FontSize="25"></Button>
+                    FontSize="25">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.5"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+                </Button>
             </Grid>
             
             <Rectangle Width="2"
@@ -57,7 +75,16 @@
                     Width="628"
                     Content="Thông số chi tiết"
                     FontSize="25"
-                    Command="{Binding ObservationDetailMachineCommand}"></Button>
+                    Command="{Binding ObservationDetailMachineCommand}">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.5"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+                </Button>
                 <Grid  Background="#9900BFFF"
                        Visibility="{Binding IsDetailMachine, Converter={StaticResource BooleanToVisibilityConverter}}">
 
@@ -68,7 +95,16 @@
                     Background="DeepSkyBlue"
                     Content="Thông số chi tiết"
                     FontSize="25"
-                    Command="{Binding ObservationDetailMachineCommand}"></Button>
+                    Command="{Binding ObservationDetailMachineCommand}">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.5"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+                </Button>
             </Grid>
            
             <Rectangle Width="2"

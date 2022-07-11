@@ -43,6 +43,12 @@ namespace MayEpCHADesktopApp.Core.Database.Repository
             await _applicationDbContext.EventMachines.AddAsync(eventMachine);
             await _applicationDbContext.SaveChangesAsync();
         }
+        public async void UpdateAsync (EventMachine eventMachine)
+        {
+
+             _applicationDbContext.EventMachines.Update(eventMachine);
+            await _applicationDbContext.SaveChangesAsync( );
+        }
         public async void Clear()
         {
             _applicationDbContext.Database.ExecuteSqlRawAsync("DELETE FROM [Configurations]");

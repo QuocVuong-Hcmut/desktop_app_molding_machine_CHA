@@ -12,6 +12,7 @@ namespace MayEpCHADesktopApp.Core.Database.Repository.Interface
     {
         void InsertAsync(EventMachine eventMachine);
         void DeleteAsync(EventMachine eventMachine);
+        void UpdateAsync (EventMachine eventMachine);
         public ObservableCollection<EventMachine> Load();
         void Clear();
     }

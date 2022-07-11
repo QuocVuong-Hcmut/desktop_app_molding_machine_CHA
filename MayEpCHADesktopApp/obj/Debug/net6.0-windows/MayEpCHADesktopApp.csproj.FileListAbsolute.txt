@@ -742,3 +742,7 @@ E:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_in
 E:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\obj\Debug\net6.0-windows\MayEpCHADesktopApp.pdb
 E:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\obj\Debug\net6.0-windows\MayEpCHADesktopApp.genruntimeconfig.cache
 E:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\obj\Debug\net6.0-windows\ref\MayEpCHADesktopApp.dll
+E:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\obj\Debug\net6.0-windows\Views\HelpView\HelpView.g.cs
+E:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\obj\Debug\net6.0-windows\Views\HistoryView\HistoryView.g.cs
+E:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\obj\Debug\net6.0-windows\Views\HelpView\HelpView.baml
+E:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\obj\Debug\net6.0-windows\Views\HistoryView\HistoryView.baml

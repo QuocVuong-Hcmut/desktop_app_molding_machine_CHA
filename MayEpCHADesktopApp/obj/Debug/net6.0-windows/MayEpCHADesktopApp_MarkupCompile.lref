@@ -1,8 +1,10 @@
-﻿E:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
+﻿
 FE:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\App.xaml;;
 FE:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\MainWindow.xaml;;
 FE:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\Resources\Components\ChartObservate.xaml;;
 FE:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\Views\AlertView\AlertView.xaml;;
+FE:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\Views\HelpView\HelpView.xaml;;
+FE:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\Views\HistoryView\HistoryView.xaml;;
 FE:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\Views\ManageView\EmployeeView.xaml;;
 FE:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\Views\ManageView\ManageView.xaml;;
 FE:\SISTRAIN\WPF\App SISTRAIN\MAYEP_LVTN\injection-molding-machine\desktop_cha_injection-molding-machine_lvtn\MayEpCHADesktopApp\Views\ManageView\MoldView.xaml;;

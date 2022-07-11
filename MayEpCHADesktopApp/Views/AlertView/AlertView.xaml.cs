@@ -24,5 +24,10 @@ namespace MayEpCHADesktopApp.Views.AlertView
         {
             InitializeComponent();
         }
+
+        private void LocaleDerRTL_MouseDown (object sender,MouseButtonEventArgs e)
+        {
+           // MessageBox.Show("kkk");
+        }
     }
 }

@@ -10,13 +10,14 @@ namespace MayEpCHADesktopApp.Core.Services.Interfaces
 {
     public interface IApiServices
     {
-         Task<ObservableCollection<Employee>> GetEmployeeTotal(string auth);
-         Task<ObservableCollection<Mold>> GetMoldTotal(string auth);
-         Task<ObservableCollection<Product>> GetProductTotal(string auth);
-         Task<ObservableCollection<Machine>> GetMachineTotal(string auth);
-         Task<ObservableCollection<ShiftReport>> GetShiftReportTotal(string auth);
-         Task PostShiftReport(string auth, ObservableCollection<ShiftReport> ListShiftReport);
-        Task PostShiftReportSingle(string auth, ShiftReport shiftReport );
+        public event Action ChangeEvent;
+        Task<ObservableCollection<Employee>> GetEmployeeTotal (string auth);
+        Task<ObservableCollection<Mold>> GetMoldTotal (string auth);
+        Task<ObservableCollection<Product>> GetProductTotal (string auth);
+        Task<ObservableCollection<Machine>> GetMachineTotal (string auth);
+        Task<ObservableCollection<ShiftReport>> GetShiftReportTotal (string auth);
+        Task PostShiftReport (string auth,ObservableCollection<ShiftReport> ListShiftReport);
+        Task PostShiftReportSingle (string auth,ShiftReport shiftReport);
 
     }
 }

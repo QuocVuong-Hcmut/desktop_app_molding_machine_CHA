@@ -76,6 +76,27 @@ namespace MayEpCHADesktopApp.Core.Migrations
 
                     b.ToTable("EventMachines");
                 });
+
+            modelBuilder.Entity("MayEpCHADesktopApp.Core.Database.ModelDatabase.HistoryCofiguration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Shift")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HistoryCofigurations");
+                });
 #pragma warning restore 612, 618
         }
     }

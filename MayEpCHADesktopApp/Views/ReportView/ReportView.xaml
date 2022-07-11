@@ -40,6 +40,14 @@
                     Content="Báo cáo cuối ca "
                     Command="{Binding ReportShiftCommand}"
                     FontSize="25">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.5"
+                             BlurRadius="50"/>
+                    </Button.Effect>
                 </Button>
                 <Button Style="{StaticResource ButtonNormal}"
                     Width="251"
@@ -48,7 +56,18 @@
                     Visibility="{Binding IsShift, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding ReportShiftCommand}"
                     FontSize="25">
-                    
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.53"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+
+
+
+
                 </Button>
             </Grid>
           
@@ -59,7 +78,16 @@
                     Width="251"
                     Content="Giám sát công nhân"
                     FontSize="25"
-                    Command="{Binding ReportEmployeeCommand}"></Button>
+                    Command="{Binding ReportEmployeeCommand}">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.5"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+                </Button>
                 <Button Style="{StaticResource ButtonNormal}"
                     Width="251"
                     Background="DeepSkyBlue"
@@ -68,6 +96,15 @@
 
                     Command="{Binding ReportEmployeeCommand}"
                     FontSize="25">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.53"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+
 
                 </Button>
             </Grid>
@@ -79,7 +116,16 @@
                     Width="251"
                     Content="Báo cáo sản xuất"
                     FontSize="25"
-                    Command="{Binding ReportExcelCommand}"></Button>
+                    Command="{Binding ReportExcelCommand}">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.53"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+                </Button>
                 <Button Style="{StaticResource ButtonNormal}"
                     Width="251"
                     Background="DeepSkyBlue"
@@ -88,6 +134,15 @@
                        
                     Command="{Binding ReportEmployeeCommand}"
                     FontSize="25">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.55"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+
 
                 </Button>
             </Grid>
@@ -99,7 +154,16 @@
                     Width="251"
                     Content="Phiếu nhập kho"
                     FontSize="25"
-                    Command="{Binding ReportExportWareHouseCommand}"></Button>
+                    Command="{Binding ReportExportWareHouseCommand}">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.53"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+                </Button>
                 <Button Style="{StaticResource ButtonNormal}"
                     Width="251"
                     Background="DeepSkyBlue"
@@ -108,6 +172,15 @@
                        
                     Command="{Binding ReportExportWareHouseCommand}"
                     FontSize="25">
+                    <Button.Effect>
+                        <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.55"
+                             BlurRadius="50"/>
+                    </Button.Effect>
+
 
                 </Button>
             </Grid>
@@ -133,11 +206,19 @@
                        
                     </Style>
                 </Button.Style>
+                <Button.Effect>
+                    <DropShadowEffect
+                            ShadowDepth="5"
+                             Direction="270"
+                             Color="Black"
+                             Opacity="0.5"
+                             BlurRadius="50"/>
+                </Button.Effect>
             </Button>
             <Rectangle Width="2"
                        Fill="White"></Rectangle>
         </StackPanel>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin=" 0 15 0 0 ">
             <Viewbox x:Name="panel_Menu"
                  Grid.Column="1"
                  HorizontalAlignment="Stretch"

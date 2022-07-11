@@ -22,7 +22,10 @@ namespace MayEpCHADesktopApp.Core.ViewModels
         public ICommand SettingsCommand { get; set; }
         public ICommand AlertCommand { get; set; }
         public ICommand ManageCommand { get; set; }
-        public ICommand ReportCommand { get; set; } 
+        public ICommand ReportCommand { get; set; }
+        public ICommand HistoryCommand { get; set; }
+        public ICommand HelpCommand { get; set; }
+
         //
         public int SelectButton { get; set; }
 
@@ -40,8 +43,8 @@ namespace MayEpCHADesktopApp.Core.ViewModels
         private bool isButtonAlert;
         public bool IsButtonHistory { get => isButtonHistory; set { isButtonHistory = value; OnPropertyChanged(); } }
         private bool isButtonHistory;
-        public bool IsButtonHepl { get => isButtonHepl; set { isButtonHepl = value; OnPropertyChanged(); } }
-        private bool isButtonHepl;
+        public bool IsButtonHelp { get => isButtonHelp; set { isButtonHelp= value; OnPropertyChanged(); } }
+        private bool isButtonHelp;
 
 
         public MainViewModel(NavigationStore navigationStore,
@@ -50,7 +53,9 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                             INavigationService _SettingsViewModel,
                             INavigationService _AlertViewModel,
                             INavigationService _ManageViewModel,
-                            INavigationService _ReportViewModel
+                            INavigationService _ReportViewModel,
+                            INavigationService _HistoryViewModel,
+                            INavigationService _HelpViewModel
                             )
         {
             _navigationStore = navigationStore;
@@ -61,6 +66,8 @@ namespace MayEpCHADesktopApp.Core.ViewModels
             AlertCommand = new NavigateCommand(_AlertViewModel);
             ManageCommand = new NavigateCommand(_ManageViewModel);
             ReportCommand = new NavigateCommand(_ReportViewModel);
+            HistoryCommand = new NavigateCommand(_HistoryViewModel);
+            HelpCommand = new NavigateCommand(_HelpViewModel);
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
             _navigationStore.CurrentButtonChanged += _navigationStore_CurrentButtonChanged;
             IsButtonLogin = false;
@@ -70,7 +77,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
             IsButtonManage = false;
             IsButtonAlert = false;
             IsButtonHistory = false;
-            isButtonHepl = false;
+            isButtonHelp= false;
 
         }
 
@@ -102,7 +109,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                     IsButtonManage = false;
                     IsButtonAlert = false;
                     IsButtonHistory = false;
-                    isButtonHepl = false;
+                    IsButtonHelp= false;
                     break;
                 case 2:
                     IsButtonLogin = false;
@@ -112,7 +119,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                     IsButtonManage = false;
                     IsButtonAlert = false;
                     IsButtonHistory = false;
-                    isButtonHepl = false;
+                    IsButtonHelp= false;
                     break;
                 case 3:
                     IsButtonLogin = false;
@@ -122,7 +129,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                     IsButtonManage = false;
                     IsButtonAlert = false;
                     IsButtonHistory = false;
-                    isButtonHepl = false;
+                    IsButtonHelp= false;
                     break;
                 case 4:
                     IsButtonLogin = false;
@@ -132,7 +139,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                     IsButtonManage = false;
                     IsButtonAlert = false;
                     IsButtonHistory = false;
-                    isButtonHepl = false;
+                    IsButtonHelp= false;
                     break;
                 case 5:
                     IsButtonLogin = false;
@@ -142,7 +149,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                     IsButtonManage = true;
                     IsButtonAlert = false;
                     IsButtonHistory = false;
-                    isButtonHepl = false;
+                    IsButtonHelp= false;
                     break;
                 case 6:
                     IsButtonLogin = false;
@@ -152,7 +159,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                     IsButtonManage = false;
                     IsButtonAlert = true;
                     IsButtonHistory = false;
-                    isButtonHepl = false;
+                    IsButtonHelp= false;
                     break;
                 case 7:
                     IsButtonLogin = false;
@@ -162,7 +169,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                     IsButtonManage = false;
                     IsButtonAlert = false;
                     IsButtonHistory = true;
-                    isButtonHepl = false;
+                    IsButtonHelp= false;
                     break;
                 case 8:
                     IsButtonLogin = false;
@@ -172,7 +179,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                     IsButtonManage = false;
                     IsButtonAlert = false;
                     IsButtonHistory = false;
-                    isButtonHepl = true;
+                    IsButtonHelp= true;
                     break;
                 default:
                     IsButtonLogin = false;
@@ -182,7 +189,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels
                     IsButtonManage = false;
                     IsButtonAlert = false;
                     IsButtonHistory = false;
-                    isButtonHepl = false;
+                    IsButtonHelp= false;
                     break;
             }
         }

@@ -25,7 +25,7 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ManageViewModel
         public async void GetTotalProduct()
         {
             ListProduct = new ObservableCollection<Product>();
-            ListProduct = await _apiServices.GetProductTotal("");
+          //  ListProduct = await _apiServices.GetProductTotal("");
         }
     }
 }

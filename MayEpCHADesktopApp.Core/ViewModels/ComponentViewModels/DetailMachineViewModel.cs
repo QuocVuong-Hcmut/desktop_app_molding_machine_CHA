@@ -115,15 +115,16 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
         private IBusControl _bus;
         private IDatabaseServices _databaseServices;
         private IApiServices _apiServices;  
+        public static event Action UpdateEventTable;
         public ICommand ChangeMoldCommand { get; set; }
         public ICommand BackCommand { get; set; }
         //IBusControl bus
         //IDatabaseServices databaseServices
         //IBusControl bus, IDatabaseServices databaseServices, IApiServices apiServices
-        public DetailMachineViewModel() {
-            //_bus = bus;
-            //_databaseServices = databaseServices;
-            //_apiServices = apiServices;
+        public DetailMachineViewModel(IBusControl bus, IDatabaseServices databaseServices, IApiServices apiServices) {
+            _bus = bus;
+            _databaseServices = databaseServices;
+            _apiServices = apiServices;
             Content = "Tạm dừng";
             Animation1 = true;
             Animation2 = false;
@@ -131,8 +132,8 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
             ListMachine = new ObservableCollection<Machine>();
             ListEmployee = new ObservableCollection<Employee>();
             ListEvent = new ObservableCollection<EventMachine>();
-            //GetTotalMold();
-            //GetTotalProduct();
+            GetTotalMold();
+            GetTotalProduct();
 
 
             #region int
@@ -142,8 +143,6 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
             Content = "Tạm dừng";
 
             #endregion int
-            // _apiServices = apiServices;
-            //  ChangeMoldCommand = new RelayCommand( async () => Pause());
             ChangeMoldCommand = new RelayObjectCommand<object>((p) => { return true; }, async (p) => Pause(p));
             BackCommand  = new RelayCommand(async () => Back());
         }
@@ -157,8 +156,9 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
 
         public async  void Command(CommandMessage commandMessage)
         {
-            var endpoint = await _bus.GetSendEndpoint(new Uri("http://127.0.0.1:8181/send-config"));
-            await endpoint.Send<CommandMessage>(commandMessage);
+            //var endpoint = await _bus.GetSendEndpoint(new Uri("http://127.0.0.1:8181/send-config"));
+            //await endpoint.Send<CommandMessage>(commandMessage);
+            
         }
         public async  void ConfigCommand(ConfigurationMessage configMessage)
         {
@@ -210,7 +210,6 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
                 case EMachineStatus.ErrorOutGoing:
                     Status = "8";
                     break;
-
             }
 
         }
@@ -239,19 +238,14 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
                 eventMachine.NameEvent = "Lỗi chu kì ép";
                 eventMachine.Status = 0;
                 eventMachine.DateTime = DateTime.UtcNow;
-                //  eventMachine.Cycle = Message.SetCycle.ToString();
+                eventMachine.CycleTime = Cycle;
                 ListEvent.Add(eventMachine);
                 CollectionViewSource.GetDefaultView(ListEvent).Refresh();
                 OnPropertyChanged("ListEvent");
+                StoreEvent(eventMachine,Message.MachineId);
+                UpdateEventTable?.Invoke( );
             }));
-            //EventMachine eventMachine = new EventMachine();
-            //    eventMachine.NameEvent = "Lỗi chu kì ép";
-            //    eventMachine.Status = 0;
-            //    eventMachine.DateTime = DateTime.UtcNow;
-            //   //  eventMachine.Cycle = Message.SetCycle.ToString();
-            //    ListEvent.Add(eventMachine);
-            //CollectionViewSource.GetDefaultView(ListEvent).Refresh();
-            OnPropertyChanged("ListEvent");
+           
             A = false;
             B = true;
             A = true;
@@ -304,29 +298,32 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
                 case "CounterShot":
                     Count = message.Value.ToString();
                     break;
+                case "CycleTime":
+                    Cycle = message.Value.ToString();
+                    break;
                     //case "bRedAlarm":
 
                     // break;
 
             }
-            foreach (var item in _databaseServices.LoadConfiguration())
-            {
-                if(Data[1] == item.MachineId)
-                {
-                    MoldId = item.MoldId;
-                    ProductId = item.ProductId;
-                    foreach(var item2 in listMold)
-                    {
-                        CycleStandard = item.MoldId;
-                    }
-                }
-            }
+            //foreach (var item in _databaseServices.LoadConfiguration())
+            //{
+            //    if(Data[1] == item.MachineId)
+            //    {
+            //        MoldId = item.MoldId;
+            //        ProductId = item.ProductId;
+            //        foreach(var item2 in listMold)
+            //        {
+            //            CycleStandard = item.MoldId;
+            //        }
+            //    }
+            //}
             Application.Current.Dispatcher.Invoke(new Action(() => {
                 EventMachine eventMachine = new EventMachine();
                 eventMachine.NameEvent = "Lỗi chu kì ép";
                 eventMachine.Status = 0;
                 eventMachine.DateTime = DateTime.UtcNow;
-                //  eventMachine.Cycle = Message.SetCycle.ToString();
+                eventMachine.CycleTime = Cycle;
                 ListEvent.Add(eventMachine);
                 CollectionViewSource.GetDefaultView(ListEvent).Refresh();
                 OnPropertyChanged("ListEvent");
@@ -335,7 +332,8 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
 
         private void Pause(object p)
         {
-            
+            string Namemachine = (p as UserControl).Name.ToString();
+
             try
             {
               
@@ -344,13 +342,24 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
                    MessageBoxResult result = CustomMessageBox.Show("Bạn có chắc dừng lại thay khuôn không ??", "Cảnh báo", MessageBoxButton.OKCancel, MessageBoxImage.Information);
                     if (result == MessageBoxResult.OK)
                     {
-                        //Command(new CommandMessage
-                        //{
-                        //    MachineId = Namemachine,
-                        //    Timestamp = DateTime.UtcNow,
-                        //    Command = ECommand.ChangeMold,
+                        Command(new CommandMessage
+                        {
+                            MachineId = Namemachine,
+                            Timestamp = DateTime.UtcNow,
+                            Command = ECommand.ChangeMold,
 
-                        //});
+                        });
+                        Application.Current.Dispatcher.Invoke(new Action(() => {
+                            EventMachine eventMachine = new EventMachine();
+                            eventMachine.NameEvent ="Thay khuôn";
+                            eventMachine.Status = 0;
+                            eventMachine.DateTime = DateTime.UtcNow;
+                            ListEvent.Add(eventMachine);
+                            CollectionViewSource.GetDefaultView(ListEvent).Refresh();
+                            OnPropertyChanged("ListEvent");
+                            StoreEvent(eventMachine,Namemachine);
+                            UpdateEventTable?.Invoke();
+                        }));
                         A = false;
                         B = true;
                         Content = "Tiếp tục";
@@ -361,33 +370,34 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
                     MessageBoxResult result = CustomMessageBox.Show("Bạn muốn máy hoạt động với thông số đã nhập??", "Cảnh báo", MessageBoxButton.OKCancel, MessageBoxImage.Information);
                     if (result == MessageBoxResult.OK)
                     {
-                        string Namemachine = (p as UserControl).Name.ToString();
-                        MessageBox.Show(Namemachine + setMold + SetCycle);
-                        //Command(new CommandMessage
-                        //{
-                        //    MachineId = Namemachine,
-                        //    Timestamp = DateTime.UtcNow,
-                        //    Command = ECommand.ChangeMoldDone,
-
-                        //});
+                        Command(new CommandMessage
+                        {
+                            MachineId = Namemachine,
+                            Timestamp = DateTime.UtcNow,
+                            Command = ECommand.ChangeMoldDone,
+                        });
+                        CycleStandard = SetCycle;
+                        MoldId = SetMold;
+                        ProductId = Product.Id;
+                        Count = "0";
+                        CustomMessageBox.Show("Thay đổi thông số khuôn thành công","Thông báo",MessageBoxButton.OKCancel,MessageBoxImage.Asterisk);
                         Application.Current.Dispatcher.Invoke(new Action(() => {
                             EventMachine eventMachine = new EventMachine();
-                            eventMachine.NameEvent = "ChangeMold";
+                            eventMachine.NameEvent = "ChangeMoldDone";
                             eventMachine.Status = 0;
                             eventMachine.DateTime = DateTime.UtcNow;
                             ListEvent.Add(eventMachine);
-                            //  eventMachine.Cycle = Message.SetCycle.ToString();
-                            ListEvent.Add(eventMachine);
                             CollectionViewSource.GetDefaultView(ListEvent).Refresh();
                             OnPropertyChanged("ListEvent");
+                            StoreEvent(eventMachine, Namemachine);
+                            UpdateEventTable?.Invoke( );
+
                         }));
-                        //  _databaseServices.InsertEventAsync(eventMachine);
-                        //PostConfigChangMold(Namemachine);
+                        
+                      //  PostConfigChangMold(Namemachine);
                         Content = "Tạm dừng";
                         A = true;
                         B = false;
-
-
                     }
                 }
             }
@@ -395,18 +405,27 @@ namespace MayEpCHADesktopApp.Core.ViewModels.ComponentViewModels
             {
 
             }
-
+        }
+        public void StoreEvent (EventMachine eventMachine, string nameMachine)
+        {
+            MayEpCHADesktopApp.Core.Database.ModelDatabase.EventMachine eventMachine1 = new Database.ModelDatabase.EventMachine( );
+            eventMachine1.NameEvent = eventMachine.NameEvent;
+            eventMachine1.Status = eventMachine.Status;
+            eventMachine1.DateTime = DateTime.UtcNow;
+            eventMachine1.Status=0;
+            eventMachine1.MachineId=nameMachine;
+            _databaseServices.InsertEventAsync(eventMachine1);
         }
         ///api
-        //public async void GetTotalMold()
-        //    {
-        //        ListMold = await _apiServices.GetMoldTotal("");
+        public async void GetTotalMold()
+        {
+            ListMold = await _apiServices.GetMoldTotal("");
 
-        //}
-        //public async void GetTotalProduct()
-        //{
-        //       ListProduct = await _apiServices.GetProductTotal("");
-        //}
+        }
+        public async void GetTotalProduct()
+        {
+            ListProduct = await _apiServices.GetProductTotal("");
+        }
         public async void PostConfigChangMold(string Namemachine)
         {
             //ShiftReport shiftReport = new ShiftReport();
